@@ -17,3 +17,5 @@
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 echo 'src-git passwallp https://github.com/xiaorouji/openwrt-passwall;packages' >>feeds.conf.default
 echo 'src-git passwalll https://github.com/xiaorouji/openwrt-passwall;luci' >>feeds.conf.default
+
+svn co https://github.com/messense/aliyundrive-webdav/trunk/openwrt package
