@@ -120,6 +120,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       run: |
         cd openwrt
+        cp .config bin/.config
         mkdir -p tar
         tar -cJvf tar/bin.tar.xz bin
         echo "status=success" >> $GITHUB_OUTPUT
