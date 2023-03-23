@@ -122,6 +122,7 @@ jobs:
         cd openwrt
         mkdir -p tar
         tar -cJvf tar/bin.tar.xz bin
+        echo "status=success" >> $GITHUB_OUTPUT
         cd tar
         echo "BIN=$PWD" >> $GITHUB_ENV
 
@@ -138,7 +139,7 @@ jobs:
 
     - name: Upload bin to cowtransfer
       id: cowtransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
+      if: steps.bin.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
         ./transfer cow --block 2621440 -s -p 64 --no-progress ${BIN} 2>&1 | tee cowtransfer.log
@@ -147,7 +148,7 @@ jobs:
 
     - name: Upload bin to WeTransfer
       id: wetransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
+      if: steps.bin.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
         ./transfer wet -s -p 16 --no-progress ${BIN} 2>&1 | tee wetransfer.log
