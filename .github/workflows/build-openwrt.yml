@@ -33,8 +33,8 @@ env:
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: false
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
+  UPLOAD_COWTRANSFER: true
+  UPLOAD_WETRANSFER: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
@@ -118,7 +118,17 @@ jobs:
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
-        mkdir -p tar && cp bin tar/bin && tar -cJf tar/bin.tar.xz tar/bin
+
+    - name: Process the bin folder
+      id: bin
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      run: |
+        cd openwrt
+        mkdir -p tar
+        cp -r bin tar/bin
+        tar -cJf tar/bin.tar.xz tar/bin
+        cd tar
+        echo "BIN=$PWD" >> $GITHUB_ENV
 
     - name: Check space usage
       if: (!cancelled())
@@ -129,7 +139,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: openwrt/tar
+        path: ${{ env.BIN }}
 
     - name: Organize files
       id: organize
@@ -147,21 +157,21 @@ jobs:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    - name: Upload firmware to cowtransfer
+    - name: Upload bin to cowtransfer
       id: cowtransfer
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
-        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
+        ./transfer cow --block 2621440 -s -p 64 --no-progress ${BIN} 2>&1 | tee cowtransfer.log
         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
         echo "url=$(cat cowtransfer.log | grep https | cut -f3 -d" ")" >> $GITHUB_OUTPUT
 
-    - name: Upload firmware to WeTransfer
+    - name: Upload bin to WeTransfer
       id: wetransfer
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
+        ./transfer wet -s -p 16 --no-progress ${BIN} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
         echo "url=$(cat wetransfer.log | grep https | cut -f3 -d" ")" >> $GITHUB_OUTPUT
 
