@@ -13,3 +13,9 @@
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 sed -i 's/cortex-a53/cortex-a53+crypto/g' target/linux/ipq807x/Makefile
+
+rm -rf feeds/packages/multimedia/aliyundrive-webdav
+rm -rf feeds/luci/applications/luci-app-aliyundrive-webdav
+rm -rf feeds/luci/applications/luci-app-argon-config
+rm -rf feeds/luci/themes/luci-theme-argon
+

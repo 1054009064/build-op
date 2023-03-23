@@ -19,4 +19,7 @@ echo 'src-git passwalll https://github.com/xiaorouji/openwrt-passwall;luci' >>fe
 echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >>feeds.conf.default
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 
+git clone -b "18.06" https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
+git clone https://github.com/jerrykuku/luci-app-argon-config package/lean/luci-theme-argon-config
+
 svn co https://github.com/messense/aliyundrive-webdav/trunk/openwrt package/lean
