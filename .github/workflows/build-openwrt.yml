@@ -75,10 +75,8 @@ jobs:
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
-           rm -r feeds/packages/multimedia/aliyundrive-webdav/*
-           svn co https://github.com/messense/aliyundrive-webdav/trunk/openwrt/aliyundrive-webdav feeds/packages/multimedia/aliyundrive-webdav
-           rm -r feeds/luci/applications/luci-app-aliyundrive-webdav/*
-           svn co https://github.com/messense/aliyundrive-webdav/trunk/openwrt/luci-app-aliyundrive-webdav feeds/luci/applications/luci-app-aliyundrive-webdav
+           rm -rf feeds/packages/multimedia/aliyundrive-webdav
+           rm -rf feeds/luci/applications/luci-app-aliyundrive-webdav
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
