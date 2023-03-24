@@ -126,10 +126,10 @@ jobs:
         cp .config bin/.config
         mkdir -p tar
         tar -cJvf tar/bin.tar.xz bin
-        sha256sum tar/* >> tar/sha256sum
         echo "status=success" >> $GITHUB_OUTPUT
         cd tar
         echo "BIN=$PWD" >> $GITHUB_ENV
+        sha256sum * >> sha256sums
 
     - name: Check space usage
       if: (!cancelled())
