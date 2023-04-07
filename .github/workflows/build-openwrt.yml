@@ -76,7 +76,7 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
-    - name: Update and install feeds
+    - name: Update feeds
       run: |
         cd openwrt
         ./scripts/feeds update -a
@@ -122,7 +122,7 @@ jobs:
         cd openwrt
         cp .config bin/.config
         mkdir -p tar
-        tar -cJvf tar/bin.tar.xz bin
+        tar -cJvf tar/bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.tar.xz bin
         echo "status=success" >> $GITHUB_OUTPUT
         cd tar
         echo "BIN=$PWD" >> $GITHUB_ENV
