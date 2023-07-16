@@ -20,7 +20,7 @@ echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >> feeds
 echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
 
 
-git clone -b "18.06" https://github.com/jerrykuku/luci-theme-argon.git package/lean/luci-theme-argon
+git clone -b "1806" https://github.com/1054009064/luci-theme-argon.git package/lean/luci-theme-argon
 git clone https://github.com/jerrykuku/lua-maxminddb.git package/lean/lua-maxminddb
 git clone -b "18.06" https://github.com/1054009064/luci-app-argon-config.git package/lean/luci-theme-argon-config
 git clone https://github.com/jerrykuku/luci-app-vssr.git package/lean//luci-app-vssr
