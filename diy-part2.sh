@@ -17,5 +17,5 @@ sed -i 's/cortex-a53/cortex-a53+crypto/g' target/linux/ipq807x/Makefile
 rm -rf feeds/packages/multimedia/aliyundrive-webdav
 rm -rf feeds/luci/applications/luci-app-aliyundrive-webdav
 rm -rf feeds/luci/applications/luci-app-argon-config
+rm -rf feeds/luci/applications/luci-app-serverchan
 rm -rf feeds/luci/themes/luci-theme-argon
-
